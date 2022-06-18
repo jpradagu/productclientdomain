@@ -1,7 +1,6 @@
-package com.nttdata.bootcamp.productclientdomain.entity;
+package com.nttdata.bootcamp.registerproduct.entity;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -9,7 +8,7 @@ import java.math.BigDecimal;
 @Data
 public class TypeCreditCard {
     @NotNull
-    private String idCreditCard;
+    private String id;
     @NotNull
     private String type;
     @NotNull

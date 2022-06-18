@@ -1,12 +1,13 @@
-package com.nttdata.bootcamp.productclientdomain.entity;
+package com.nttdata.bootcamp.registerproduct.entity;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 public class Customer {
-    @Id
-    private String idCustomer;
+    @NotNull
+    private String id;
     private String documentType;
     private String numberDocument;
     private String name;

@@ -1,15 +1,17 @@
-package com.nttdata.bootcamp.productclientdomain.entity;
+package com.nttdata.bootcamp.registerproduct.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
-@Document(collection = "personalAccounts")
-public class PersonalAccount {
+@Document(collection = "corporateAccounts")
+public class CorporateAccount {
     @Id
     private String id;
     @NotNull
@@ -21,7 +23,10 @@ public class PersonalAccount {
     @NotNull
     private Customer customer;
     @NotNull
-    private TypeAccountBank typeAccountBank;
+    private TypeAccount typeAccount;
     @NotNull
     private Boolean state;
+    @NotEmpty
+    private List<Customer> holders;
+    private List<Customer> signers;
 }

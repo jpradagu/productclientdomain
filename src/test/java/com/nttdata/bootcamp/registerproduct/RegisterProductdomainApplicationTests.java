@@ -1,10 +1,10 @@
-package com.nttdata.bootcamp.productclientdomain;
+package com.nttdata.bootcamp.registerproduct;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProductclientdomainApplicationTests {
+class RegisterProductdomainApplicationTests {
 
 	@Test
 	void contextLoads() {

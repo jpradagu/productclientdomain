@@ -1,6 +1,6 @@
 spring:
   application:
-    name: productclientdomain
+    name: registerproductdomain
   cloud:
     config:
       uri: http://localhost:8081

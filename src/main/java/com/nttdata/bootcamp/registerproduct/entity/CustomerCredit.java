@@ -1,4 +1,4 @@
-package com.nttdata.bootcamp.productclientdomain.entity;
+package com.nttdata.bootcamp.registerproduct.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
