@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Data
 public class TypeCredit {
     @NotNull
-    private String idCreditAccount;
+    private String id;
     private String type;
     private BigDecimal interestRateMonth;
     private Boolean allowCompany;

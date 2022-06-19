@@ -22,7 +22,7 @@ public class PersonalAccount {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date openingDate;
     @NotNull
-    private Customer customer;
+    private PersonalCustomer customer;
     @NotNull
     private TypeAccount typeAccount;
     @NotNull

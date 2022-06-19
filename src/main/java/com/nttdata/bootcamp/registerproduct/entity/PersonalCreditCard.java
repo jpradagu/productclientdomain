@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@Document(collection = "customerCreditCards")
-public class CustomerCreditCard {
+@Document(collection = "personalCreditCards")
+public class PersonalCreditCard {
     @Id
     private String id;
     private String code;
@@ -22,7 +22,7 @@ public class CustomerCreditCard {
     private int limitDate;
     private LocalDateTime openingDate;
     private LocalDateTime deliveryDate;
-    private Customer client;
+    private PersonalCustomer customer;
     private TypeCreditCard typeCreditCard;
     private boolean state;
 }

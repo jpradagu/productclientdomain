@@ -3,10 +3,11 @@ package com.nttdata.bootcamp.registerproduct.entity;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,14 +20,15 @@ public class CorporateAccount {
     @NotNull
     private String accountNumber;
     @NotNull
-    private LocalDateTime openingDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date openingDate;
     @NotNull
-    private Customer customer;
+    private CommercialCustomer customer;
     @NotNull
     private TypeAccount typeAccount;
     @NotNull
     private Boolean state;
     @NotEmpty
-    private List<Customer> holders;
-    private List<Customer> signers;
+    private List<Client> holders;
+    private List<Client> signers;
 }

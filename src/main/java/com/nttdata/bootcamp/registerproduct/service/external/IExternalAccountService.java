@@ -1,9 +1,10 @@
 package com.nttdata.bootcamp.registerproduct.service.external;
 
-import com.nttdata.bootcamp.registerproduct.entity.Customer;
+import com.nttdata.bootcamp.registerproduct.entity.CommercialCustomer;
+import com.nttdata.bootcamp.registerproduct.entity.PersonalCustomer;
 import reactor.core.publisher.Mono;
 
 public interface IExternalAccountService {
-    Mono<Customer> findCustomerPersonalById(String id);
-    Mono<Customer> findCustomerCommercialById(String id);
+    Mono<PersonalCustomer> findCustomerPersonalById(String id);
+    Mono<CommercialCustomer> findCustomerCommercialById(String id);
 }

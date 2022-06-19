@@ -5,13 +5,12 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class Customer {
+public class Client {
     @NotNull
-    private String id;
-    private String documentType;
-    private String numberDocument;
+    private String dni;
+    @NotNull
     private String name;
     private String email;
+    @NotNull
     private String phone;
-
 }

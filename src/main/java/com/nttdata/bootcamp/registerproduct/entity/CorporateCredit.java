@@ -7,8 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
 
 @Data
-@Document(collection = "customerCredits")
-public class CustomerCredit {
+@Document(collection = "corporateCredits")
+public class CorporateCredit {
+
     @Id
     private String id;
     private String code;
@@ -16,7 +17,8 @@ public class CustomerCredit {
     private BigDecimal amountPaid;
     private int fees;
     private int feesPaid;
-    private Customer client;
+    private PersonalCustomer customer;
     private TypeCredit typeCredit;
     private boolean state;
+
 }

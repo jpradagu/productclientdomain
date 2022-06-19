@@ -27,7 +27,7 @@ public class PersonalAccountController {
     private PersonalAccountService personalAccountService;
 
     @GetMapping
-    public Mono<ResponseEntity<Flux<PersonalAccount>>> findAll(){
+    public Mono<ResponseEntity<Flux<PersonalAccount>>> findAll() {
         log.info("PersonalAccountController findAll ->");
         return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(personalAccountService.findAll()));
     }
@@ -45,12 +45,12 @@ public class PersonalAccountController {
     public Mono<ResponseEntity<Map<String, Object>>> create(@Valid @RequestBody Mono<PersonalAccount> accountBankMono) {
         log.info("PersonalAccountController create ->");
         Map<String, Object> result = new HashMap<>();
-        return accountBankMono.flatMap(c -> {
-            c.setId(null);
-            return personalAccountService.create(c).map(p -> ResponseEntity
-                    .created(URI.create("/api/register/account/personal/".concat(p.getId())))
-                    .contentType(MediaType.APPLICATION_JSON).body(result));
-        }).onErrorResume(ResumenException::errorResumenException);
+        return accountBankMono.flatMap(c -> personalAccountService
+                .create(c)
+                .map(p -> ResponseEntity
+                        .created(URI.create("/api/register/account/personal/".concat(p.getId())))
+                        .contentType(MediaType.APPLICATION_JSON).body(result)))
+                .onErrorResume(ResumenException::errorResumenException);
     }
 
     @DeleteMapping("/{id}")

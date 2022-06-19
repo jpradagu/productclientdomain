@@ -44,12 +44,9 @@ public class CorporateAccountController {
     public Mono<ResponseEntity<Map<String, Object>>> create(@Valid @RequestBody Mono<CorporateAccount> accountBankMono) {
         log.info("CorporateAccountController create ->");
         Map<String, Object> result = new HashMap<>();
-        return accountBankMono.flatMap(c -> {
-            c.setId(null);
-            return corporateAccountService.create(c).map(p -> ResponseEntity
-                    .created(URI.create("/api/register/account/corporate/".concat(p.getId())))
-                    .contentType(MediaType.APPLICATION_JSON).body(result));
-        }).onErrorResume(ResumenException::errorResumenException);
+        return accountBankMono.flatMap(c -> corporateAccountService.create(c).map(p -> ResponseEntity
+                .created(URI.create("/api/register/account/corporate/".concat(p.getId())))
+                .contentType(MediaType.APPLICATION_JSON).body(result))).onErrorResume(ResumenException::errorResumenException);
     }
 
     @DeleteMapping("/{id}")

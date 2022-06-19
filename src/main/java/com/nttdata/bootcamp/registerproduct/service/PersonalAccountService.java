@@ -43,14 +43,15 @@ public class PersonalAccountService {
                         .flatMap(typeAccount -> personalAccountRepository
                                 .findByTypeAccountTypeAndCustomerId(typeAccount.getType(), customer.getId())
                                 .collectList().flatMap(lst -> {
-                                    if (lst.size() > 0) {
-                                        return Mono.error(new RuntimeException("Only one bank account per person is allowed"));
-                                    } else if (typeAccount.getAllowPerson()) {
+                                    if (typeAccount.getAllowPerson()) {
+                                        if (lst.size() > 0) {
+                                            return Mono.error(new RuntimeException("Only one bank account per person is allowed"));
+                                        }
                                         personalAccount.setTypeAccount(typeAccount);
                                         personalAccount.setCustomer(customer);
                                         return personalAccountRepository.save(personalAccount);
                                     } else {
-                                        return Mono.error(new RuntimeException("Bank account not allowed for personal account"));
+                                        return Mono.error(new RuntimeException("Bank account not allowed for personal customer"));
                                     }
                                 })));
     }

@@ -1,9 +1,9 @@
-package com.nttdata.bootcamp.registerproduct.service.external.dto;
+package com.nttdata.bootcamp.registerproduct.entity;
 
 import lombok.Data;
 
 @Data
-public class CommercialCustomerDto {
+public class CommercialCustomer {
     private String id;
     private String ruc;
     private String reasonSocial;
