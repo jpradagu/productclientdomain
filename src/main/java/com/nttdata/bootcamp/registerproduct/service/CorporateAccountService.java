@@ -1,7 +1,6 @@
 package com.nttdata.bootcamp.registerproduct.service;
 
-import com.nttdata.bootcamp.registerproduct.entity.CorporateAccount;
-import com.nttdata.bootcamp.registerproduct.entity.PersonalAccount;
+import com.nttdata.bootcamp.registerproduct.model.CorporateAccount;
 import com.nttdata.bootcamp.registerproduct.repository.CorporateAccountRepository;
 import com.nttdata.bootcamp.registerproduct.service.external.IExternalAccountService;
 import com.nttdata.bootcamp.registerproduct.service.external.IExternalProductService;

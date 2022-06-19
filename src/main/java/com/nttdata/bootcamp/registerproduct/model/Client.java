@@ -1,4 +1,4 @@
-package com.nttdata.bootcamp.registerproduct.entity;
+package com.nttdata.bootcamp.registerproduct.model;
 
 import lombok.Data;
 

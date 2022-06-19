@@ -1,7 +1,9 @@
 package com.nttdata.bootcamp.registerproduct.repository;
 
-import com.nttdata.bootcamp.registerproduct.entity.PersonalAccount;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+
+import com.nttdata.bootcamp.registerproduct.model.PersonalAccount;
+
 import reactor.core.publisher.Flux;
 
 public interface PersonalAccountRepository extends ReactiveMongoRepository<PersonalAccount, String> {

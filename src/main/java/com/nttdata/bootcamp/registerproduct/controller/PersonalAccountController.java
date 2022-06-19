@@ -1,7 +1,7 @@
 package com.nttdata.bootcamp.registerproduct.controller;
 
-import com.nttdata.bootcamp.registerproduct.entity.PersonalAccount;
 import com.nttdata.bootcamp.registerproduct.exception.ResumenException;
+import com.nttdata.bootcamp.registerproduct.model.PersonalAccount;
 import com.nttdata.bootcamp.registerproduct.service.PersonalAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

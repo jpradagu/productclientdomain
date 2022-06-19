@@ -1,5 +1,7 @@
 package com.nttdata.bootcamp.registerproduct.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import reactor.core.publisher.Flux;
@@ -9,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResumenException {
+    private final static Logger log = LoggerFactory.getLogger(ResumenException.class);
     public static Mono<ResponseEntity<Map<String, Object>>> errorResumenException(Throwable t) {
         Map<String, Object> result = new HashMap<>();
         if ((t instanceof WebExchangeBindException)) {
@@ -18,11 +21,13 @@ public class ResumenException {
                     .flatMapMany(Flux::fromIterable)
                     .map(fieldError -> "The field " + fieldError.getField() + " " + fieldError.getDefaultMessage())
                     .collectList().flatMap(list -> {
+                        log.info(list.toString());
                         result.put("errors", list);
                         return Mono.just(ResponseEntity.badRequest().body(result));
                     });
         } else {
             return Mono.just(t).cast(RuntimeException.class).flatMap(e -> {
+                log.info(e.getMessage());
                 result.put("errors", t.getMessage());
                 return Mono.just(ResponseEntity.internalServerError().body(result));
 

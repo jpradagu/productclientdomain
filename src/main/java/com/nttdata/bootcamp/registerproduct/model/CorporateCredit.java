@@ -1,4 +1,4 @@
-package com.nttdata.bootcamp.registerproduct.entity;
+package com.nttdata.bootcamp.registerproduct.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -7,8 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
 
 @Data
-@Document(collection = "personalCredits")
-public class PersonalCredit {
+@Document(collection = "corporateCredits")
+public class CorporateCredit {
+
     @Id
     private String id;
     private String code;
@@ -16,7 +17,8 @@ public class PersonalCredit {
     private BigDecimal amountPaid;
     private int fees;
     private int feesPaid;
-    private PersonalCustomer customer;
+    private CommercialCustomer customer;
     private TypeCredit typeCredit;
     private boolean state;
+
 }

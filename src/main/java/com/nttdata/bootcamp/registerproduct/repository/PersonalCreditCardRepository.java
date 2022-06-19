@@ -1,7 +1,8 @@
 package com.nttdata.bootcamp.registerproduct.repository;
 
-import com.nttdata.bootcamp.registerproduct.entity.PersonalCreditCard;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+
+import com.nttdata.bootcamp.registerproduct.model.PersonalCreditCard;
 
 public interface PersonalCreditCardRepository extends ReactiveMongoRepository<PersonalCreditCard, String> {
 }
