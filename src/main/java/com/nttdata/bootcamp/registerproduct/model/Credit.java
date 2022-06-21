@@ -1,31 +1,32 @@
 package com.nttdata.bootcamp.registerproduct.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
-@Document(collection = "personalAccounts")
-public class PersonalAccount {
+@Document(collection = "credits")
+public class Credit {
   @Id
   private String id;
   @NotNull
   private String code;
   @NotNull
-  private String accountNumber;
+  private BigDecimal amountGiven;
   @NotNull
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
-  private Date openingDate;
+  private BigDecimal amountPaid;
+  @NotNull
+  private Integer fees;
+  @NotNull
+  private Integer feesPaid;
+  @NotNull
+  private CustomerType customerType;
   @NotNull
   private String customerId;
   @NotNull
-  private String accountId;
-  @NotNull
-  private BigDecimal amount;
+  private String typeCreditId;
   @NotNull
   private Boolean state;
 }

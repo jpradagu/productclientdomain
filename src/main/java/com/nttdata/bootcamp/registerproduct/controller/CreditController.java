@@ -1,9 +1,8 @@
 package com.nttdata.bootcamp.registerproduct.controller;
 
 import com.nttdata.bootcamp.registerproduct.exception.ResumenError;
-import com.nttdata.bootcamp.registerproduct.model.PersonalAccount;
-import com.nttdata.bootcamp.registerproduct.response.PersonalAccountResponse;
-import com.nttdata.bootcamp.registerproduct.service.PersonalAccountService;
+import com.nttdata.bootcamp.registerproduct.model.Credit;
+import com.nttdata.bootcamp.registerproduct.service.CreditService;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,62 +24,67 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * PersonalAccount controller.
+ * CorporateCredit Controller.
  */
 @RestController
-@RequestMapping("/api/register/account/personal")
-public class PersonalAccountController {
+@RequestMapping("/api/register/credit")
+public class CreditController {
 
-  private final Logger log = LoggerFactory.getLogger(PersonalAccountController.class);
+  private final Logger log = LoggerFactory.getLogger(CreditController.class);
 
   @Autowired
-  private PersonalAccountService personalAccountService;
+  private CreditService creditService;
 
   /**
-   * FindAll Personal account.
+   * FindAll CorporateCredit.
    */
   @GetMapping
-  public Mono<ResponseEntity<Flux<PersonalAccountResponse>>> findAll() {
-    log.info("PersonalAccountController findAll ->");
-    return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
-        .body(personalAccountService.findAll()));
+  public Mono<ResponseEntity<Flux<Credit>>> findAll() {
+    log.info("CorporateCreditController findAll ->");
+    return Mono.just(
+        ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
+            .body(creditService.findAll()));
   }
 
   /**
-   * Find Personal account.
+   * Find CorporateCredit.
+   *
+   * @param id identifier
+   * @return object corporate credit
    */
   @GetMapping("/{id}")
-  public Mono<ResponseEntity<PersonalAccount>> findById(@PathVariable String id) {
-    log.info("PersonalAccountController findById ->");
-    return personalAccountService.findById(id)
+  public Mono<ResponseEntity<Credit>> findById(@PathVariable String id) {
+    log.info("CorporateCreditController findById ->");
+    return creditService.findById(id)
         .map(ce -> ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ce))
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
   /**
-   * Create Personal account.
+   * Create corporate credit.
    */
   @PostMapping
   public Mono<ResponseEntity<Map<String, Object>>> create(
-      @Valid @RequestBody Mono<PersonalAccount> accountBankMono) {
-    log.info("PersonalAccountController create ->");
+      @Valid @RequestBody Mono<Credit> corporateCreditMono) {
+    log.info("CorporateCreditController create ->");
     Map<String, Object> result = new HashMap<>();
-    return accountBankMono.flatMap(c -> personalAccountService
-            .create(c)
+    return corporateCreditMono
+        .flatMap(c -> creditService.create(c)
             .map(p -> ResponseEntity
-                .created(URI.create("/api/register/account/personal/".concat(p.getId())))
+                .created(URI.create("/api/register/credit/corporate/".concat(p.getId())))
                 .contentType(MediaType.APPLICATION_JSON).body(result)))
         .onErrorResume(ResumenError::errorResumenException);
   }
 
   /**
-   * Delete Personal account.
+   * Delete Corporate credit.
    */
   @DeleteMapping("/{id}")
-  public Mono<ResponseEntity<Void>>  delete(@PathVariable String id) {
-    log.info("PersonalAccountController delete ->");
-    return personalAccountService.findById(id)
-        .flatMap(e -> personalAccountService.delete(e)
+  public Mono<ResponseEntity<Void>> delete(@PathVariable String id) {
+    log.info("CorporateCreditController delete ->");
+    return creditService
+        .findById(id)
+        .flatMap(e -> creditService.delete(e)
             .then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT))))
         .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
