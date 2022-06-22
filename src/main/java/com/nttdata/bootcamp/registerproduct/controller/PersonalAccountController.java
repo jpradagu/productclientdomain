@@ -2,7 +2,6 @@ package com.nttdata.bootcamp.registerproduct.controller;
 
 import com.nttdata.bootcamp.registerproduct.exception.ResumenError;
 import com.nttdata.bootcamp.registerproduct.model.PersonalAccount;
-import com.nttdata.bootcamp.registerproduct.response.PersonalAccountResponse;
 import com.nttdata.bootcamp.registerproduct.service.PersonalAccountService;
 import java.net.URI;
 import java.util.HashMap;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +40,7 @@ public class PersonalAccountController {
    * FindAll Personal account.
    */
   @GetMapping
-  public Mono<ResponseEntity<Flux<PersonalAccountResponse>>> findAll() {
+  public Mono<ResponseEntity<Flux<PersonalAccount>>> findAll() {
     log.info("PersonalAccountController findAll ->");
     return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
         .body(personalAccountService.findAll()));
@@ -71,6 +71,20 @@ public class PersonalAccountController {
                 .created(URI.create("/api/register/account/personal/".concat(p.getId())))
                 .contentType(MediaType.APPLICATION_JSON).body(result)))
         .onErrorResume(ResumenError::errorResumenException);
+  }
+
+  /**
+   * update PersonalAccount.
+   */
+  @PutMapping("/{id}")
+  public Mono<ResponseEntity<Map<String, Object>>> update(
+      @Valid @RequestBody Mono<PersonalAccount> accountBankMono, @PathVariable String id) {
+    log.info("PersonalAccountController update ->");
+    Map<String, Object> result = new HashMap<>();
+    return accountBankMono.flatMap(c -> personalAccountService.update(c, id).flatMap(p -> {
+      result.put("data", p);
+      return Mono.just(ResponseEntity.ok().body(result));
+    })).onErrorResume(ResumenError::errorResumenException);
   }
 
   /**

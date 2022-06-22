@@ -2,6 +2,9 @@ package com.nttdata.bootcamp.registerproduct.service.external.dto;
 
 import lombok.Data;
 
+/**
+ * Personal Customer model.
+ */
 @Data
 public class PersonalCustomer {
   private String id;

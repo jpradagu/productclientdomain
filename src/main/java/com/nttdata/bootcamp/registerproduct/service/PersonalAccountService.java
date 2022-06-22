@@ -2,12 +2,8 @@ package com.nttdata.bootcamp.registerproduct.service;
 
 import com.nttdata.bootcamp.registerproduct.model.PersonalAccount;
 import com.nttdata.bootcamp.registerproduct.repository.PersonalAccountRepository;
-import com.nttdata.bootcamp.registerproduct.response.CustomerResponse;
-import com.nttdata.bootcamp.registerproduct.response.PersonalAccountResponse;
 import com.nttdata.bootcamp.registerproduct.service.external.IExternalAccountService;
 import com.nttdata.bootcamp.registerproduct.service.external.IExternalProductService;
-import com.nttdata.bootcamp.registerproduct.service.external.dto.PersonalCustomer;
-import com.nttdata.bootcamp.registerproduct.service.external.dto.TypeAccount;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +18,6 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class PersonalAccountService {
 
-  public static final Integer MINOR = -1;
-
   @Autowired
   private PersonalAccountRepository personalAccountRepository;
 
@@ -34,47 +28,11 @@ public class PersonalAccountService {
   private IExternalProductService externalProductService;
 
   /**
-   * build from personalCustomer.
-   */
-  private CustomerResponse buildFromPersonal(PersonalCustomer personal) {
-    CustomerResponse customerResponse = new CustomerResponse();
-    customerResponse.setDocumentNumber(personal.getDni());
-    customerResponse.setEmail(personal.getEmail());
-    customerResponse.setId(personal.getId());
-    customerResponse.setName(personal.getName());
-    customerResponse.setPhone(personal.getPhone());
-    customerResponse.setType("DNI");
-    return customerResponse;
-  }
-
-  /**
-   * build from personalAccount.
-   */
-  private Mono<PersonalAccountResponse> buildPersonalAccount(PersonalAccount account,
-                                                             TypeAccount typeAccount,
-                                                             PersonalCustomer customer) {
-    PersonalAccountResponse p = new PersonalAccountResponse();
-    p.setAccountNumber(account.getAccountNumber());
-    p.setAccount(typeAccount);
-    p.setAmount(account.getAmount());
-    p.setCode(account.getCode());
-    p.setCustomer(buildFromPersonal(customer));
-    p.setId(account.getId());
-    p.setOpeningDate(account.getOpeningDate());
-    p.setState(account.getState());
-    return Mono.just(p);
-  }
-
-  /**
    * findAll PersonalAccountResponse.
    */
-  public Flux<PersonalAccountResponse> findAll() {
+  public Flux<PersonalAccount> findAll() {
     log.info("PersonalAccountService findAll ->");
-    return personalAccountRepository.findAll()
-        .flatMap(account -> externalAccountService.findCustomerPersonalById(
-                account.getCustomerId())
-            .flatMap(customer -> externalProductService.findTypeAccountById(account.getAccountId())
-                .flatMap(typeAccount -> buildPersonalAccount(account, typeAccount, customer))));
+    return personalAccountRepository.findAll();
   }
 
   /**
@@ -93,7 +51,7 @@ public class PersonalAccountService {
     return externalAccountService
         .findCustomerPersonalById(personalAccount.getCustomerId())
         .flatMap(customer -> externalProductService
-            .findTypeAccountById(personalAccount.getAccountId())
+            .findTypeAccountById(personalAccount.getTypeAccountId())
             .flatMap(typeAccount -> personalAccountRepository
                 .findByCustomerId(customer.getId())
                 .collectList().flatMap(lst -> {
@@ -103,7 +61,7 @@ public class PersonalAccountService {
                           new RuntimeException("Only one bank account per person is allowed"));
                     }
                     if (personalAccount.getAmount()
-                        .compareTo(typeAccount.getMinimumOpeningAmount()) == MINOR) {
+                        .compareTo(typeAccount.getMinimumOpeningAmount()) < 0) {
                       return Mono.error(
                           new RuntimeException("The personal account requires a minimum amount"));
                     }
@@ -113,6 +71,19 @@ public class PersonalAccountService {
                         new RuntimeException("Bank account not allowed for personal customer"));
                   }
                 })));
+  }
+
+  /**
+   * Update corporate account.
+   */
+  public Mono<PersonalAccount> update(PersonalAccount personalAccount, String id) {
+    log.info("CorporateAccountService update ->");
+    return personalAccountRepository.findById(id)
+        .switchIfEmpty(Mono.error(new RuntimeException("personal account not found")))
+        .flatMap(p -> {
+          personalAccount.setId(id);
+          return personalAccountRepository.save(personalAccount);
+        });
   }
 
   /**

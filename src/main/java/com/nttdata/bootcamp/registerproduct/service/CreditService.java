@@ -12,7 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * service corporate credit.
+ * service  credit.
  */
 @Service
 @Slf4j
@@ -28,7 +28,7 @@ public class CreditService {
   private IExternalProductService externalProductService;
 
   /**
-   * findAll corporate credit.
+   * findAll credit.
    */
   public Flux<Credit> findAll() {
     log.info("CorporateCreditService findAll ->");
@@ -36,7 +36,7 @@ public class CreditService {
   }
 
   /**
-   * find corporate credit.
+   * find credit.
    */
   public Mono<Credit> findById(String id) {
     log.info("CorporateCreditService findById ->");
@@ -44,7 +44,7 @@ public class CreditService {
   }
 
   /**
-   * create corporate credit.
+   * create credit.
    */
   public Mono<Credit> create(Credit credit) {
     log.info("CorporateAccountService create ->");
@@ -79,7 +79,20 @@ public class CreditService {
   }
 
   /**
-   * delete corporate credit.
+   * update credit.
+   */
+  public Mono<Credit> update(Credit credit, String id) {
+    log.info("CorporateAccountService update ->");
+    return corporateCreditRepository.findById(id)
+        .switchIfEmpty(Mono.error(new RuntimeException("Corporate account not found")))
+        .flatMap(p -> {
+          credit.setId(id);
+          return corporateCreditRepository.save(credit);
+        });
+  }
+
+  /**
+   * delete credit.
    */
   public Mono<Void> delete(Credit corporateCredit) {
     log.info("CorporateAccountService delete ->");

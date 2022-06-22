@@ -2,7 +2,6 @@ package com.nttdata.bootcamp.registerproduct.controller;
 
 import com.nttdata.bootcamp.registerproduct.exception.ResumenError;
 import com.nttdata.bootcamp.registerproduct.model.CorporateAccount;
-import com.nttdata.bootcamp.registerproduct.response.CorporateAccountResponse;
 import com.nttdata.bootcamp.registerproduct.service.CorporateAccountService;
 import java.net.URI;
 import java.util.HashMap;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +39,7 @@ public class CorporateAccountController {
    * FindAll CorporateAccount.
    */
   @GetMapping
-  public Mono<ResponseEntity<Flux<CorporateAccountResponse>>> findAll() {
+  public Mono<ResponseEntity<Flux<CorporateAccount>>> findAll() {
     log.info("CorporateAccountController findAll ->");
     return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
         .body(corporateAccountService.findAll()));
@@ -49,10 +49,9 @@ public class CorporateAccountController {
    * Find CorporateAccount.
    */
   @GetMapping("/{id}")
-  public Mono<ResponseEntity<CorporateAccountResponse>> findById(@PathVariable String id) {
+  public Mono<ResponseEntity<CorporateAccount>> findById(@PathVariable String id) {
     log.info("CorporateAccountController findById ->");
     return corporateAccountService.findById(id)
-        .flatMap(account -> corporateAccountService.buildCorporateResponse(account))
         .map(ce -> ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ce))
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
@@ -71,6 +70,20 @@ public class CorporateAccountController {
                     URI.create("/api/register/account/corporate/".concat(p.getId())))
                 .contentType(MediaType.APPLICATION_JSON).body(result)))
         .onErrorResume(ResumenError::errorResumenException);
+  }
+
+  /**
+   * update CorporateAccount.
+   */
+  @PutMapping("/{id}")
+  public Mono<ResponseEntity<Map<String, Object>>> update(
+      @Valid @RequestBody Mono<CorporateAccount> accountBankMono, @PathVariable String id) {
+    log.info("CorporateAccountController update ->");
+    Map<String, Object> result = new HashMap<>();
+    return accountBankMono.flatMap(c -> corporateAccountService.update(c, id).flatMap(p -> {
+      result.put("data", p);
+      return Mono.just(ResponseEntity.ok().body(result));
+    })).onErrorResume(ResumenError::errorResumenException);
   }
 
   /**

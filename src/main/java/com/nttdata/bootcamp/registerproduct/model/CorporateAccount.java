@@ -1,6 +1,5 @@
 package com.nttdata.bootcamp.registerproduct.model;
 
-import com.nttdata.bootcamp.registerproduct.service.external.dto.TypeAccount;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +10,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
+/**
+ * CorporateAccount.
+ */
 @Data
 @Document(collection = "corporateAccounts")
 public class CorporateAccount {
@@ -26,7 +28,7 @@ public class CorporateAccount {
   @NotNull
   private String customerId;
   @NotNull
-  private String accountId;
+  private String typeAccountId;
   @NotNull
   private Boolean state;
   @NotNull

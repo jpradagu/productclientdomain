@@ -23,7 +23,7 @@ public class PersonalAccount {
   @NotNull
   private String customerId;
   @NotNull
-  private String accountId;
+  private String typeAccountId;
   @NotNull
   private BigDecimal amount;
   @NotNull

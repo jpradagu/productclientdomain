@@ -51,7 +51,7 @@ public class CreditCardService {
     return externalAccountService
         .findCustomerCommercialById(corporateCreditCard.getCustomerId())
         .flatMap(customer -> externalProductService
-            .findTypeCreditCardById(corporateCreditCard.getCreditCardId())
+            .findTypeCreditCardById(corporateCreditCard.getTypeCreditCardId())
             .flatMap(typeCredit -> {
               if (typeCredit.getAllowCompany()) {
                 return creditCardRepository.save(corporateCreditCard);

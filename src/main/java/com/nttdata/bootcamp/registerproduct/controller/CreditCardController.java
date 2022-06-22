@@ -48,8 +48,6 @@ public class CreditCardController {
 
   /**
    * Find CorporateCreditCard.
-   * @param id identifier.
-   * @return object corporate credit card.
    */
   @GetMapping("/{id}")
   public Mono<ResponseEntity<CreditCard>> findById(@PathVariable String id) {
@@ -61,8 +59,6 @@ public class CreditCardController {
 
   /**
    * Create Corporate Credit Card.
-   * @param corporateCreditCardMono corporate credit card object
-   * @return corporate credit card register.
    */
   @PostMapping
   public Mono<ResponseEntity<Map<String, Object>>> create(
@@ -79,8 +75,6 @@ public class CreditCardController {
 
   /**
    * Delete corporate credit card.
-   * @param id identifier
-   * @return Void
    */
   @DeleteMapping("/{id}")
   public Mono<ResponseEntity<Void>> delete(@PathVariable String id) {
