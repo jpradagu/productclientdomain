@@ -6,3 +6,11 @@ spring:
       uri: http://localhost:8081
       username: bootcampnttdada
       password: nttdata2022w1
+
+
+# Connection details
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
