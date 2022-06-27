@@ -1,6 +1,6 @@
 package com.nttdata.bootcamp.registerproduct.config;
 
-import com.nttdata.bootcamp.registerproduct.model.PaymentWallet;
+import com.nttdata.bootcamp.registerproduct.event.Event;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 /**
  * KafkaProducerConfig.
@@ -26,7 +27,7 @@ public class KafkaProducerConfig {
   /**
    * producerFactoryJson.
    */
-  public ProducerFactory<String, PaymentWallet> producerFactoryJson() {
+  public ProducerFactory<String, Event<?>> producerFactoryJson() {
     Map<String, Object> config = new HashMap<>();
     config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServerConfig);
     config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -39,7 +40,7 @@ public class KafkaProducerConfig {
    * kafkaTemplateJson.
    */
   @Bean
-  public KafkaTemplate<String, PaymentWallet> kafkaTemplateJson() {
+  public KafkaTemplate<String, Event<?>> kafkaTemplateJson() {
     return new KafkaTemplate<>(producerFactoryJson());
   }
 }

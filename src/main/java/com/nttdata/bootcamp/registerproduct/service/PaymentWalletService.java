@@ -1,8 +1,11 @@
 package com.nttdata.bootcamp.registerproduct.service;
 
+import com.nttdata.bootcamp.registerproduct.event.Event;
+import com.nttdata.bootcamp.registerproduct.event.PaymentWalletEvent;
 import com.nttdata.bootcamp.registerproduct.model.PaymentWallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +16,17 @@ import org.springframework.stereotype.Service;
 public class PaymentWalletService {
   private static final Logger logger = LoggerFactory.getLogger(PaymentWalletService.class);
 
-  private final KafkaTemplate<String, PaymentWallet> kafkaTemplate;
+  @Autowired
+  private KafkaTemplate<String, Event<?>> kafkaTemplate;
 
-  public PaymentWalletService(KafkaTemplate<String, PaymentWallet> kafkaTemplate) {
-    this.kafkaTemplate = kafkaTemplate;
-  }
 
+  /**
+   * sendPayment.
+   */
   public void sendPayment(PaymentWallet t, String topic) {
-    logger.info("Send payment -> {}", t);
-    this.kafkaTemplate.send(topic, t);
+    PaymentWalletEvent event = new PaymentWalletEvent();
+    event.setData(t);
+    logger.info("Send payment -> {}", event);
+    this.kafkaTemplate.send(topic, event);
   }
 }
